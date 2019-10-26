@@ -2,6 +2,7 @@ import React from "react";
 // import {moviesData} from "../moviesData";
 import MovieItem from "./MovieItem";
 import MovieTabs from "./MovieTabs";
+import ChoosePage from "./ChoosePage";
 import { API_URL, API_KEY_3 } from "../utils/api";
 
 
@@ -12,6 +13,7 @@ class App extends React.Component {
             movies: [],
             moviesWillWatch: [],
             sort_by: "revenue.desc",
+            currentPage: 1
         }
     }
 
@@ -25,12 +27,13 @@ class App extends React.Component {
         }
     }
 
-    getMovies = () => {
-        fetch(`${API_URL}/discover/movie?api_key=${API_KEY_3}&sort_by=${this.state.sort_by}`).then((response) => {
+    getMovies = (currentPage=this.state.currentPage) => {
+        fetch(`${API_URL}/discover/movie?api_key=${API_KEY_3}&sort_by=${this.state.sort_by}&page=${currentPage}`).then((response) => {
             return response.json();
         }).then((data) => {
             this.setState({
-                movies: data.results
+                movies: data.results,
+                currentPage: currentPage,
             });
         });
     }
@@ -66,7 +69,20 @@ class App extends React.Component {
         });
     }
 
+    nextPage = () => {
+        if (this.state.currentPage < 500) { 
+            this.getMovies(this.state.currentPage + 1);
+        }
+    }
+
+    prevPage = () => {
+        if (this.state.currentPage > 1) {
+            this.getMovies(this.state.currentPage - 1);
+        }
+    }
+
     render() {
+        console.log(this.state.currentPage);
         return (
             <div className="container">
                 <div className="row">
@@ -89,6 +105,7 @@ class App extends React.Component {
                                 );
                             })}
                         </div>
+                        <ChoosePage currentPage={this.state.currentPage} nextPage={this.nextPage} prevPage={this.prevPage} />
                     </div>
                     <div className="col-3">
                         {this.state.moviesWillWatch.length === 0 ? (
