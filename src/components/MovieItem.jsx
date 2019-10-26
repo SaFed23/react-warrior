@@ -25,7 +25,7 @@ class MovieItem extends React.Component{
                 <p className="mb-0">Rating: {movie.vote_average}</p>
                   <button
                     type="button"
-                    className={this.state.willWatch ? "btn btn-success" : "btn btn-secondary" }
+                    className={`btn ${this.state.willWatch ? "btn-success" : "btn-secondary" }`}
                     onClick={
                         this.state.willWatch ? () => {
                             this.setState({
@@ -39,7 +39,7 @@ class MovieItem extends React.Component{
                             addMovieToWillWatch(movie);
                         }
                     }>
-                    {this.state.willWatch ? "Remove Will Watch" : " Add Will Watch" }
+                    {this.state.willWatch ? "Remove" : " Add" } Will Watch
                   </button>
               </div>
               <button onClick={removeMovie.bind(null, movie)}>Delete movie</button>
