@@ -3,7 +3,7 @@ import React from "react";
 import MovieItem from "./MovieItem";
 import MovieTabs from "./MovieTabs";
 import ChoosePage from "./ChoosePage";
-import { API_URL, API_KEY_3 } from "../utils/api";
+import { API_KEY_3, callApi } from "../utils/api";
 
 
 
@@ -32,14 +32,13 @@ class MoviePage extends React.Component {
         }
     }
 
-    getMovies = (currentPage=this.state.currentPage) => {
-        fetch(`${API_URL}/discover/movie?api_key=${API_KEY_3}&sort_by=${this.state.sort_by}&page=${currentPage}`).then((response) => {
-            return response.json();
-        }).then((data) => {
-            this.setState({
-                movies: data.results,
-                currentPage: currentPage,
-            });
+    getMovies = async (currentPage=this.state.currentPage) => {
+        const data = await callApi(
+            `discover/movie?api_key=${API_KEY_3}&sort_by=${this.state.sort_by}&page=${currentPage}`
+            );  
+        this.setState({
+            movies: data.results,
+            currentPage: currentPage,
         });
     }
 
@@ -127,7 +126,7 @@ class MoviePage extends React.Component {
                                 <li className="list-group-item active">Will Watch</li>
                                 {this.state.moviesWillWatch.map(movie => {
                                     return (
-                                        <li className="list-group-item">
+                                        <li className="list-group-item" key={movie.id}>
                                             {movie.title} {movie.vote_average}
                                         </li>
                                     );
