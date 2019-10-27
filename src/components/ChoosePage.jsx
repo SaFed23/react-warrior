@@ -5,7 +5,7 @@ const ChoosePage = (props) => {
     const {currentPage, nextPage, prevPage} = props;
 
     return (
-        <div>
+        <div className="mb-4">
             <ul className="list-group list-group-horizontal-md">
                 <li className={classNames("list-group-item", {"active": currentPage > 1})} style={{cursor: "pointer"}} onClick={prevPage}>Назад</li>
                 <li className=
